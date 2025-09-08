@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
 
-const sendEmail = async (options) => {
+const sendEmail = async (to, subject, html) => {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -9,14 +9,12 @@ const sendEmail = async (options) => {
     },
   });
 
-  const mailOptions = {
-    from: process.env.EMAIL_USER,
-    to: options.to,
-    subject: options.subject,
-    text: options.text,
-  };
-
-  await transporter.sendMail(mailOptions);
+  await transporter.sendMail({
+    from: `"Password Reset App" <${process.env.EMAIL_USER}>`,
+    to,
+    subject,
+    html,
+  });
 };
 
 export default sendEmail;
