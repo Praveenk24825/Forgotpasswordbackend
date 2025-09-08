@@ -39,8 +39,6 @@ export const login = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
-
-// Forgot Password
 export const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
@@ -55,18 +53,20 @@ export const forgotPassword = async (req, res) => {
     await user.save();
 
     const resetUrl = `${process.env.CLIENT_URL}/reset/${resetToken}`;
+    const htmlContent = `
+      <h3>Hello ${user.name},</h3>
+      <p>You requested a password reset.</p>
+      <p>Click below link to reset your password:</p>
+      <a href="${resetUrl}" target="_blank">${resetUrl}</a>
+      <p>This link will expire in 15 minutes.</p>
+    `;
 
-    await sendEmail(
-      user.email,
-      "Password Reset Request",
-      `
-        <h3>Hello ${user.name},</h3>
-        <p>You requested a password reset.</p>
-        <p>Click below link to reset your password:</p>
-        <a href="${resetUrl}" target="_blank">${resetUrl}</a>
-        <p>This link will expire in 15 minutes.</p>
-      `
-    );
+    try {
+      await sendEmail(user.email, "Password Reset Request", htmlContent);
+    } catch (emailErr) {
+      console.error("Email failed:", emailErr);
+      return res.status(500).json({ message: "Failed to send reset email" });
+    }
 
     res.json({ message: "Reset email sent successfully!" });
   } catch (err) {
