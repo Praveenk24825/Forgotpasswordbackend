@@ -7,7 +7,13 @@ import authRoutes from "./routes/authRoutes.js";
 dotenv.config();
 const app = express();
 
-app.use(cors());
+// ✅ Proper CORS setup
+app.use(cors({
+  origin: [process.env.CLIENT_URL, "http://localhost:5173"], // allow frontend
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  credentials: true
+}));
+
 app.use(express.json());
 
 mongoose.connect(process.env.MONGO_URI)
