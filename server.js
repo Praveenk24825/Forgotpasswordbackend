@@ -23,6 +23,11 @@ app.use(
   })
 );
 
+// Root route for Render / testing
+app.get("/", (req, res) => {
+  res.send("🚀 Backend is running!");
+});
+
 // Routes
 app.use("/api/auth", authRoutes);
 
