@@ -15,7 +15,8 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",        // React dev
-      "https://qwery98.netlify.app"   // Netlify frontend
+      "https://qwery98.netlify.app" ,
+       "https://forgotpasswordfrontend-rgp5.vercel.app/forgot-password"  // Netlify frontend
     ],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
